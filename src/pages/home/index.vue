@@ -1,6 +1,8 @@
 <template>
-  <div class="">
-    <home-header/>
+  <div class="home">
+    <home-header class="g-header-container"/>
+    <div></div>
+    <div class="g-backtop-container"></div>
   </div>
 </template>
 
@@ -15,4 +17,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~assets/scss/mixins';
+  .home{
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    background: $bgc-theme;
+  }
 </style>

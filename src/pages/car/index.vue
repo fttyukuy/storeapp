@@ -1,12 +1,16 @@
 <template>
   <div class="">
-    car
+    <car-header/>
   </div>
 </template>
 
 <script>
+import CarHeader from './header'
 export default {
-  name: 'Car'
+  name: 'Car',
+  components: {
+    CarHeader
+  }
 }
 </script>
 
