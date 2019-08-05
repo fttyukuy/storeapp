@@ -1,9 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from 'pages/home'
-import Category from 'pages/category'
-import Car from 'pages/car'
-import Personal from 'pages/personal'
 
 Vue.use(Router)
 
@@ -12,19 +8,22 @@ export default new Router({
     {
       path: '/home',
       name: 'Home',
-      component: Home
+      component: () => import('pages/home')
     }, {
       path: '/category',
       name: 'Category',
-      component: Category
+      component: () => import('pages/category')
     }, {
       path: '/car',
       name: 'Car',
-      component: Car
+      component: () => import('pages/car')
     }, {
       path: '/personal',
       name: 'Personal',
-      component: Personal
+      component: () => import('pages/personal')
+    }, {
+      path: '*',
+      redirect: '/home'
     }
   ]
 })
