@@ -1,7 +1,10 @@
 <template>
-  <div id="app">
-    hello world
-    <router-view/>
+  <div id="app" class='g-container'>
+    <div class="g-view-container">
+      <router-view/>
+    </div>
+    <div class="g-footer-container">
+    </div>
   </div>
 </template>
 
@@ -10,6 +13,3 @@ export default {
   name: 'App'
 }
 </script>
-
-<style>
-</style>
