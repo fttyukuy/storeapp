@@ -23,6 +23,7 @@ import {swiperSlide} from 'vue-awesome-swiper'
 import MeSlider from 'base/slider'
 import {sliderOptions} from './config'
 import MeLoading from 'base/loading'
+import {getHomeSlider} from 'api/home.js'
 export default {
   name: 'HomeSlider',
   components: {
@@ -30,15 +31,23 @@ export default {
     MeSlider,
     MeLoading
   },
-  props: {
-    sliders: Array
-  },
   data () {
     return {
       direction: sliderOptions.direction,
       interval: sliderOptions.interval,
       loop: sliderOptions.loop,
-      pagination: sliderOptions.pagination
+      pagination: sliderOptions.pagination,
+      sliders: []
+    }
+  },
+  created () {
+    this.getSlider()
+  },
+  methods: {
+    getSlider () {
+      getHomeSlider().then(data => {
+        this.sliders = data
+      })
     }
   }
 }

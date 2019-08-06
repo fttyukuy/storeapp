@@ -1,9 +1,9 @@
 <template>
   <div class="home">
     <home-header class="g-header-container"/>
-    <div>
-      <home-slider :sliders = 'sliders'/>
-    </div>
+    <me-scroll>
+       <home-slider/>
+    </me-scroll>
     <div class="g-backtop-container"></div>
   </div>
 </template>
@@ -11,28 +11,13 @@
 <script>
 import HomeHeader from './header'
 import HomeSlider from './slider'
-import {getHomeSlider} from 'api/home.js'
+import MeScroll from 'base/scroll'
 export default {
   name: 'Home',
   components: {
     HomeHeader,
-    HomeSlider
-  },
-  data () {
-    return {
-      sliders: []
-    }
-  },
-  created () {
-    this.getSlider()
-  },
-  methods: {
-    getSlider () {
-      getHomeSlider().then(data => {
-        console.log(data)
-        this.sliders = data
-      })
-    }
+    HomeSlider,
+    MeScroll
   }
 }
 </script>
