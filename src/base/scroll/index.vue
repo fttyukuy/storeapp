@@ -28,6 +28,22 @@ export default {
         }
       }
     }
+  },
+  // 为什么不用校验就可以根性滚动条。
+  props: {
+    data: {
+      type: [Array, Object]
+    }
+  },
+  watch: {
+    data () {
+      this.update()
+    }
+  },
+  methods: {
+    update () {
+      this.$refs.swiper && this.$refs.swiper.swiper.update()
+    }
   }
 }
 </script>

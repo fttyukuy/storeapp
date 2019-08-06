@@ -10,7 +10,7 @@
           class="recommend-link"
           :to="{name: 'Product', params:{id: item.baseinfo.itemId}}"
         >
-          <p class="recommend-pic"><img class="recommend-img" :src="item.baseinfo.picUrlNew"></p>
+          <p class="recommend-pic"><img class="recommend-img" v-lazy="item.baseinfo.picUrlNew"></p>
           <p class="recommend-name">{{item.name.shortName}}</p>
           <p class="recommend-origPrice"><del>¥{{item.price.origPrice}}</del></p>
           <p class="recommend-info">
@@ -47,11 +47,11 @@ export default {
         return
       }
       getHomeRecommend(this.curPage).then(data => {
-        console.log(data)
         if (data) {
           this.curPage++
           this.totalPage = data.totalPage
           this.recommendList = this.recommendList.concat(data.itemList)
+          this.$emit('updata', this.recommendList)
         }
       })
     }
