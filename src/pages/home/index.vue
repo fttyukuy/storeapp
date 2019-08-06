@@ -29,6 +29,7 @@ export default {
   methods: {
     getSlider () {
       getHomeSlider().then(data => {
+        console.log(data)
         this.sliders = data
       })
     }

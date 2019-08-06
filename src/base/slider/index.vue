@@ -58,7 +58,7 @@ export default {
           disableOnInteraction: false
         } : false,
         slidesPerView: 1,
-        loop: this.loop,
+        loop: this.data.length > 1 ? this.loop : false,
         pagination: {
           el: this.pagination ? '.swiper-pagination' : null
         }

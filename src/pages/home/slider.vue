@@ -5,6 +5,7 @@
       :interval= 'interval'
       :loop:='loop'
       :pagination='pagination'
+      :data = 'sliders'
       v-if='sliders.length'
     >
       <swiper-slide v-for= "(item, index) in sliders" :key = "index">
