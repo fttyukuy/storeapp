@@ -42,5 +42,11 @@ export const getHomeRecommend = (page = 1, psize = REC_PSIZE) => {
     throw new Error('未成功获取数据')
   }).catch(err => {
     console.log(err)
+  }).then(data => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(data)
+      }, 1000)
+    })
   })
 }
