@@ -13,6 +13,7 @@
         </a>
       </swiper-slide>
     </me-slider>
+    <me-loading v-else/>
   </div>
 </template>
 
@@ -20,11 +21,13 @@
 import {swiperSlide} from 'vue-awesome-swiper'
 import MeSlider from 'base/slider'
 import {sliderOptions} from './config'
+import MeLoading from 'base/loading'
 export default {
   name: 'HomeSlider',
   components: {
     swiperSlide,
-    MeSlider
+    MeSlider,
+    MeLoading
   },
   props: {
     sliders: Array
