@@ -1,17 +1,38 @@
 <template>
   <div class="home">
     <home-header class="g-header-container"/>
-    <div></div>
+    <div>
+      <home-slider :sliders = 'sliders'/>
+    </div>
     <div class="g-backtop-container"></div>
   </div>
 </template>
 
 <script>
 import HomeHeader from './header'
+import HomeSlider from './slider'
+import {getHomeSlider} from 'api/home.js'
 export default {
   name: 'Home',
   components: {
-    HomeHeader
+    HomeHeader,
+    HomeSlider
+  },
+  data () {
+    return {
+      sliders: []
+    }
+  },
+  created () {
+    this.getSlider()
+  },
+  methods: {
+    getSlider () {
+      getHomeSlider().then(data => {
+        console.log(data)
+        this.sliders = data
+      })
+    }
   }
 }
 </script>

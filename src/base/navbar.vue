@@ -30,7 +30,6 @@ export default {
 <style lang="scss" scoped>
 @import '~assets/scss/mixins';
   .mine-navbar{
-    position: relative;
     display: flex;
     align-items: center;
     width: 100%;
