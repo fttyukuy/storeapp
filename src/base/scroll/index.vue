@@ -63,6 +63,7 @@ export default {
     this.init()
   },
   methods: {
+    // 供外部更新滚动条用
     update () {
       this.$refs.swiper && this.$refs.swiper.swiper.update()
     },
@@ -80,13 +81,15 @@ export default {
         },
         on: {
           sliderMove: this.scroll,
-          touchEnd: this.touchEnd
+          touchEnd: this.touchEnd,
+          transitionEnd: this.scrollEnd
         }
       }
     },
     scroll () {
       if (this.pulling) return
       const swiper = this.$refs.swiper.swiper
+      this.$emit('scroll', swiper.translate, swiper)
       if (swiper.translate > 0) {
         if (!this.pulldown) {
           return
@@ -105,6 +108,13 @@ export default {
           this.$refs.pullUp.setText(PULL_UP_TEXT_INIT)
         }
       }
+    },
+    scrollEnd () {
+      const swiper = this.$refs.swiper.swiper
+      this.$emit('scroll-end', swiper.translate, swiper, this.pulling)
+    },
+    scrollToTop (speed, runCallbacks) {
+      this.$refs.swiper && this.$refs.swiper.swiper.slideTo(0, speed, runCallbacks)
     },
     touchEnd () {
       if (this.pulling) return
@@ -138,6 +148,9 @@ export default {
       swiper.allowTouchMove = true
       swiper.setTransition(swiper.params.speed)
       swiper.setTranslate(0)
+      setTimeout(() => {
+        this.$emit('pull-down-transition-end')
+      }, swiper.params.speed)
     },
     pullUpEnd () {
       this.pulling = false

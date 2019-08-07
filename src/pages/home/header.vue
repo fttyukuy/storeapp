@@ -1,5 +1,5 @@
 <template>
-  <me-navbar class="header">
+  <me-navbar class="header" v-show="showHeader">
     <i class="iconfont header-scan" slot="left">&#xe611;</i>
     <div class="header-search" slot="center">
       <i class="iconfont header-search-icon">&#xe665;</i>
@@ -15,6 +15,19 @@ export default {
   name: 'HomeHeader',
   components: {
     MeNavbar
+  },
+  data () {
+    return {
+      showHeader: true
+    }
+  },
+  methods: {
+    show () {
+      this.showHeader = true
+    },
+    hide () {
+      this.showHeader = false
+    }
   }
 }
 </script>
@@ -23,6 +36,7 @@ export default {
   @import '~assets/scss/mixins';
   .header{
     width: 100%;
+    transition: background-color .5s;
   }
   .header-scan{
       color: $icon-color-default;
@@ -42,5 +56,8 @@ export default {
     .header-msg{
       color: $icon-color-default;
       font-size: $icon-font-size;
+    }
+    .headerTransition{
+      background-color: $header-bgc-translucent;
     }
 </style>
