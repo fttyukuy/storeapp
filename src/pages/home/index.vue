@@ -1,10 +1,10 @@
 <template>
   <div class="home">
     <home-header class="g-header-container"/>
-    <me-scroll :data='recommends' @pullDown='ToRefresh'>
+    <me-scroll :data='recommends' @pullDown='downToRefresh' @pullUp='upToRefresh' pulldown pullup>
        <home-slider ref='slider'/>
        <home-nav/>
-       <home-recommend @updata='getRecommend'/>
+       <home-recommend @updata='getRecommend' ref='recommend'/>
     </me-scroll>
     <div class="g-backtop-container"></div>
   </div>
@@ -34,8 +34,15 @@ export default {
     getRecommend (recommend) {
       this.recommends = recommend
     },
-    ToRefresh (end) {
+    downToRefresh (end) {
       this.$refs.slider.update().then(end)
+    },
+    upToRefresh (end) {
+      this.$refs.recommend.update().then(end).catch(err => {
+        if (err) {
+          console.log(err)
+        }
+      })
       // setTimeout(() => {
       //   console.log('刷新')
       //   end()

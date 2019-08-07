@@ -7,6 +7,9 @@
       <slot></slot>
       <div class="swiper-scrollbar" slot="scrollbar"></div>
     </swiper-slide>
+    <div class="scroll-pull-up" v-if="pullup">
+      <me-loading inline :text="pullUpText" ref="pullUp"/>
+    </div>
   </swiper>
 </template>
 
@@ -18,7 +21,12 @@ import {
   PULL_DOWN_TEXT_INIT,
   PULL_DOWN_TEXT_START,
   PULL_DOWN_TEXT_ING,
-  PULL_DOWN_TEXT_END
+  PULL_DOWN_TEXT_END,
+  PULL_UP_HEIGHT,
+  PULL_UP_TEXT_INIT,
+  PULL_UP_TEXT_START,
+  PULL_UP_TEXT_ING,
+  PULL_UP_TEXT_END
 } from './config'
 export default {
   name: 'MeScroll',
@@ -29,8 +37,7 @@ export default {
   },
   data () {
     return {
-      pulling: false,
-      pullDownText: PULL_DOWN_TEXT_INIT
+      pulling: false
     }
   },
   // 为什么不用校验就可以根性滚动条。
@@ -40,7 +47,11 @@ export default {
     },
     pulldown: {
       type: Boolean,
-      default: true
+      default: false
+    },
+    pullup: {
+      type: Boolean,
+      default: false
     }
   },
   watch: {
@@ -56,6 +67,8 @@ export default {
       this.$refs.swiper && this.$refs.swiper.swiper.update()
     },
     init () {
+      this.pullDownText = PULL_DOWN_TEXT_INIT
+      this.pullUpText = PULL_UP_TEXT_INIT
       this.swiperOption = {
         direction: 'vertical',
         slidesPerView: 'auto',
@@ -83,11 +96,21 @@ export default {
         } else {
           this.$refs.pullDown.setText(PULL_DOWN_TEXT_INIT)
         }
+      } else if (swiper.isEnd) {
+        if (!this.pullup) return
+        const isPullUp = Math.abs(swiper.translate) + swiper.height - PULL_UP_HEIGHT > parseInt(swiper.$wrapperEl.css('height'))
+        if (isPullUp) {
+          this.$refs.pullUp.setText(PULL_UP_TEXT_START)
+        } else {
+          this.$refs.pullUp.setText(PULL_UP_TEXT_INIT)
+        }
       }
     },
     touchEnd () {
       if (this.pulling) return
       const swiper = this.$refs.swiper.swiper
+      const isPullUp = Math.abs(swiper.translate) + swiper.height - PULL_UP_HEIGHT > parseInt(swiper.$wrapperEl.css('height'))
+      const translate = parseInt(swiper.$wrapperEl.css('height')) + PULL_UP_HEIGHT - swiper.height
       if (swiper.translate > PULL_DOWN_HEIGHT) {
         if (!this.pulldown) {
           return
@@ -98,6 +121,13 @@ export default {
         swiper.params.virtualTranslate = true// 定住不给回弹
         this.$refs.pullDown.setText(PULL_DOWN_TEXT_ING)
         this.$emit('pullDown', this.pullDownEnd)
+      } else if (isPullUp) {
+        this.pulling = true
+        swiper.allowTouchMove = false// 禁止触摸
+        swiper.setTranslate(-translate)
+        swiper.params.virtualTranslate = true// 定住不给回弹
+        this.$refs.pullUp.setText(PULL_UP_TEXT_ING)
+        this.$emit('pullUp', this.pullUpEnd)
       }
     },
     pullDownEnd () {
@@ -108,6 +138,14 @@ export default {
       swiper.allowTouchMove = true
       swiper.setTransition(swiper.params.speed)
       swiper.setTranslate(0)
+    },
+    pullUpEnd () {
+      this.pulling = false
+      const swiper = this.$refs.swiper.swiper
+      this.$refs.pullUp.setText(PULL_UP_TEXT_END)
+      swiper.params.virtualTranslate = false
+      swiper.allowTouchMove = true
+      swiper.setTransition(swiper.params.speed)
     }
   }
 }
@@ -128,5 +166,12 @@ export default {
     bottom: 100%;
     width: 100%;
     height: 100px;
+  }
+  .scroll-pull-up{
+    position: absolute;
+    left: 0;
+    top: 100%;
+    width: 100%;
+    height: 50px;
   }
 </style>
