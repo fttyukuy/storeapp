@@ -1,5 +1,5 @@
 <template>
-  <swiper :options="swiperOption">
+  <swiper :options="swiperOption" :key="keyId">
     <slot></slot>
     <div class="swiper-pagination" v-if="pagination" slot="pagination"></div>
   </swiper>
@@ -43,6 +43,17 @@ export default {
       default () {
         return []
       }
+    }
+  },
+  data () {
+    return {
+      keyId: Math.random()
+    }
+  },
+  watch: {
+    data () {
+      if (this.data.length === 0) return
+      this.keyId = Math.random()
     }
   },
   created () {

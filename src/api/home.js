@@ -6,7 +6,15 @@ import jsonp from 'assets/js/jsonp'
 export const getHomeSlider = () => {
   return axios.get('http://www.imooc.com/api/home/slider', {timeout: TIMEOUT}).then(res => {
     if (res.data.code === SUC_CODE) {
-      return res.data.slider
+      // 随机获取五张图片
+      let sliders = res.data.slider
+      let _sliders = []
+      for (let i = 0; i < 5; i++) {
+        let index = Math.floor(Math.random() * sliders.length)
+        _sliders.push(sliders[index])
+        sliders.splice(index, 1)
+      }
+      return _sliders
     }
     throw new Error('未成功获取数据')
   }).catch(err => {

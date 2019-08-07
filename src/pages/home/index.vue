@@ -1,8 +1,8 @@
 <template>
   <div class="home">
     <home-header class="g-header-container"/>
-    <me-scroll :data='recommends'>
-       <home-slider/>
+    <me-scroll :data='recommends' @pullDown='ToRefresh'>
+       <home-slider ref='slider'/>
        <home-nav/>
        <home-recommend @updata='getRecommend'/>
     </me-scroll>
@@ -33,6 +33,13 @@ export default {
   methods: {
     getRecommend (recommend) {
       this.recommends = recommend
+    },
+    ToRefresh (end) {
+      this.$refs.slider.update().then(end)
+      // setTimeout(() => {
+      //   console.log('刷新')
+      //   end()
+      // }, 2000)
     }
   }
 }
