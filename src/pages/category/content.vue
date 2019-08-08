@@ -43,6 +43,8 @@
 
 <script>
 import {getCategoryContent} from 'api/category'
+import { CATEGORY_CONTENT_KEY, CATEGORY_CONTENT_UPDATE_TIME_INTERVAL } from './config'
+import storage from 'assets/js/storage'
 import MeScroll from 'base/scroll'
 import MeLoading from 'base/loading'
 import MeBacktop from 'base/backtop'
@@ -67,10 +69,31 @@ export default {
     }
   },
   // created () {
-  //   this.getContent()
+  //   this.getContent(this.curId)
   // },
   methods: {
-    getContent () {
+    getContent (id) {
+      let contents = storage.get(CATEGORY_CONTENT_KEY)
+      let updateTime = 0
+      let curTime = new Date().getTime()
+      console.log(contents)
+      if (contents && contents[id]) {
+        updateTime = contents[id].updateTime || 0
+        if (curTime - updateTime <= CATEGORY_CONTENT_UPDATE_TIME_INTERVAL) {
+          this.contents = contents[id]
+          this.backtop()
+        } else {
+          this.getHttpContent().then(() => {
+            this.setStorage(CATEGORY_CONTENT_KEY, id, this.contents, curTime)
+          })
+        }
+      } else {
+        this.getHttpContent().then(() => {
+          this.setStorage(CATEGORY_CONTENT_KEY, id, this.contents, curTime)
+        })
+      }
+    },
+    getHttpContent () {
       if (this.curId) {
         return getCategoryContent(this.curId).then(data => {
           if (data) {
@@ -79,6 +102,13 @@ export default {
           }
         })
       }
+    },
+    setStorage (key, id, content, curTime) {
+      let contents = storage.get(key)
+      if (!contents) contents = {}
+      contents[id] = content
+      contents[id].updateTime = curTime
+      storage.set(key, contents)
     },
     backtop () {
       this.$refs.scroll && this.$refs.scroll.scrollToTop()
@@ -92,11 +122,9 @@ export default {
     }
   },
   watch: {
-    curId () {
+    curId (curId) {
       this.isLoading = true
-      this.getContent().then(() => {
-        // this.isLoading = false
-      })
+      this.getContent(curId)
     },
     contents () {
       this.isLoading = false
