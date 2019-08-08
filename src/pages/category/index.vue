@@ -8,7 +8,7 @@
         <category-tab @switchTab = 'getTabId'/>
       </div>
       <div class="category-content">
-        <category-content/>
+        <category-content :curId='curId'/>
       </div>
     </div>
   </div>
