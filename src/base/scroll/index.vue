@@ -5,7 +5,7 @@
     </div>
     <swiper-slide>
       <slot></slot>
-      <div class="swiper-scrollbar" slot="scrollbar"></div>
+      <div class="swiper-scrollbar" slot="scrollbar" v-if="hasScrollBar"></div>
     </swiper-slide>
     <div class="scroll-pull-up" v-if="pullup">
       <me-loading inline :text="pullUpText" ref="pullUp"/>
@@ -52,6 +52,10 @@ export default {
     pullup: {
       type: Boolean,
       default: false
+    },
+    hasScrollBar: {
+      type: Boolean,
+      default: true
     }
   },
   watch: {
@@ -132,6 +136,9 @@ export default {
         this.$refs.pullDown.setText(PULL_DOWN_TEXT_ING)
         this.$emit('pullDown', this.pullDownEnd)
       } else if (isPullUp) {
+        if (!this.pullup) {
+          return
+        }
         this.pulling = true
         swiper.allowTouchMove = false// 禁止触摸
         swiper.setTranslate(-translate)
