@@ -1,7 +1,7 @@
 <template>
   <me-navbar class="header" v-show="showHeader">
     <i class="iconfont header-scan" slot="left">&#xe611;</i>
-    <div class="header-search" slot="center">
+    <div class="header-search" slot="center" @click='ToSearch'>
       <i class="iconfont header-search-icon">&#xe665;</i>
       <span class="header-search-text">开学季有礼，好物3折起</span>
     </div>
@@ -27,6 +27,9 @@ export default {
     },
     hide () {
       this.showHeader = false
+    },
+    ToSearch () {
+      this.$router.push('/search')
     }
   }
 }

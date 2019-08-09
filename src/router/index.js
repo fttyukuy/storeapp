@@ -28,6 +28,10 @@ export default new Router({
       path: '/product/:id',
       name: 'Product',
       component: () => import('pages/product')
+    }, {
+      path: '/search',
+      name: 'Search',
+      component: () => import('pages/search')
     }
   ]
 })
