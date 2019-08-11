@@ -3,7 +3,7 @@
     <i class="iconfont header-scan" slot="left" @click="toBack">&#xe675;</i>
     <div class="header-search" slot="center">
       <i class="iconfont header-search-icon">&#xe665;</i>
-      <input type="text" class="header-search-input" v-model="query" placeholder="开学季有礼，好物3折起">
+      <input type="text" class="header-search-input" ref='input' v-model="query" placeholder="开学季有礼，好物3折起">
       <i class="iconfont header-search-cancel" v-show="query" @click="clear">&#xe714;</i>
     </div>
   </me-navbar>
@@ -21,12 +21,22 @@ export default {
       query: ''
     }
   },
+  mounted () {
+    this.focus()
+  },
   methods: {
     toBack () {
       this.$router.back()
     },
+    focus () {
+      this.$refs.input && this.$refs.input.focus()
+    },
     clear () {
       this.query = ''
+    },
+    reset () {
+      this.clear()
+      this.focus()
     }
   }
 }
