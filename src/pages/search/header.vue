@@ -11,6 +11,7 @@
 
 <script>
 import MeNavbar from 'base/navbar'
+import {debounce} from 'assets/js/debounce'
 export default {
   name: 'SearchHeader',
   components: {
@@ -23,6 +24,11 @@ export default {
   },
   mounted () {
     this.focus()
+  },
+  watch: {
+    query: debounce((val) => {
+      console.log(val)
+    })
   },
   methods: {
     toBack () {

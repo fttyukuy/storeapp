@@ -1,15 +1,20 @@
 <template>
-  <div class="search">
-    <search-header/>
-  </div>
+   <transition  name="search" mode="out-in">
+    <div class="search">
+      <search-header/>
+      <search-hot/>
+    </div>
+  </transition>
 </template>
 
 <script>
 import SearchHeader from './header'
+import SearchHot from './hot'
 export default {
   name: 'Search',
   components: {
-    SearchHeader
+    SearchHeader,
+    SearchHot
   }
 }
 </script>
@@ -22,5 +27,13 @@ export default {
     width: 100%;
     height: 100%;
     background: $bgc-theme;
+  }
+  .search-enter-active,
+  .search-leave-active{
+    transition: all .5s;
+  }
+  .search-enter,
+  .search-leave-to{
+    transform: translateX(100%);
   }
 </style>
