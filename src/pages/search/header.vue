@@ -26,8 +26,8 @@ export default {
     this.focus()
   },
   watch: {
-    query: debounce((val) => {
-      console.log(val)
+    query: debounce(function () {
+      this.$emit('handleQuery', this.query)
     })
   },
   methods: {
@@ -52,10 +52,11 @@ export default {
  @import '~assets/scss/mixins';
   .header{
     width: 100%;
-    background: #f00;
+    background: #fff;
+    border-bottom: 1px solid $icon-color;
   }
   .header-scan{
-      color: $icon-color-default;
+      color: $icon-color;
       font-size: $icon-font-size;
     }
     .header-search{
@@ -65,12 +66,13 @@ export default {
       width: 100%;
       height: 30px;
       border-radius: 15px;
-      background: #fff;
+      background:  $bgc-theme;
       &-icon{
         margin: 0 10px;
       }
       &-input{
         flex: 1;
+        background: transparent;
       }
       &-cancel{
         margin-right: 10px;
